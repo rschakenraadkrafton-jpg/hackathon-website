@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Hackathon · AI Game Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img
+          class="brand-logo"
+          src="assets/logo.png"
+          alt="AI Hackathon — AI Game Lab"
+          width="220"
+          height="auto"
+          onerror="this.classList.add('brand-logo--missing')"
+        />
+        <div class="brand-text brand-text--fallback">
+          <span class="brand-kicker">West Publishing · AI Game Lab</span>
+          <span class="brand-title">AI Hackathon</span>
+        </div>
+      </div>
+      <p class="tagline">
+        Register, submit your build, and explore projects — July 2026
+      </p>
+    </div>
+  </header>
+
+  <nav class="tab-bar" aria-label="Main sections">
+    <button type="button" class="tab tab--active" data-tab="register" aria-selected="true">
+      Registration
+    </button>
+    <button type="button" class="tab" data-tab="upload" aria-selected="false">
+      Upload results
+    </button>
+    <button type="button" class="tab" data-tab="projects" aria-selected="false">
+      Projects &amp; voting
+    </button>
+  </nav>
+
+  <main class="main">
+    <!-- Tab 1: Registration -->
+    <section id="panel-register" class="panel panel--active" aria-labelledby="register-heading">
+      <h1 id="register-heading" class="panel-title">Registration</h1>
+      <p class="panel-lead">
+        Choose a track, name your project, and list everyone on the entry. (Demo — data stays in your browser until we connect the backend.)
+      </p>
+
+      <fieldset class="track-fieldset">
+        <legend class="sr-only">Track</legend>
+        <div class="track-toggle">
+          <label class="track-option">
+            <input type="radio" name="track" value="team" checked />
+            <span class="track-option-ui">
+              <strong>Team Identity League</strong>
+              <span>2–4 members · strategy &amp; market focus</span>
+            </span>
+          </label>
+          <label class="track-option">
+            <input type="radio" name="track" value="individual" />
+            <span class="track-option-ui">
+              <strong>AI Game Sprint</strong>
+              <span>Solo · AI-driven execution &amp; experimentation</span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <form id="form-register" class="form" novalidate>
+        <label class="field">
+          <span class="field-label">Project name</span>
+          <input type="text" name="projectName" required autocomplete="off" placeholder="e.g. Neon Bazaar Tycoon" />
+        </label>
+
+        <div id="team-fields" class="form-block">
+          <div class="field-row">
+            <span class="field-label">Team members (2–4)</span>
+            <button type="button" class="btn btn-ghost btn-small" id="btn-add-member">Add member</button>
+          </div>
+          <div id="member-list" class="member-list"></div>
+          <p class="hint" id="member-hint"></p>
+        </div>
+
+        <div id="individual-fields" class="form-block is-hidden">
+          <label class="field">
+            <span class="field-label">Your full name</span>
+            <input type="text" name="soloName" autocomplete="name" placeholder="Contestant name" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field-label">Contact email (for announcements)</span>
+          <input type="email" name="email" autocomplete="email" placeholder="you@company.com" />
+        </label>
+
+        <button type="submit" class="btn btn-primary">Save registration (demo)</button>
+        <p class="form-status" id="register-status" role="status"></p>
+      </form>
+    </section>
+
+    <!-- Tab 2: Upload -->
+    <section id="panel-upload" class="panel" hidden aria-labelledby="upload-heading">
+      <h1 id="upload-heading" class="panel-title">Upload results</h1>
+      <p class="panel-lead">
+        Submit your playable link and files. Team track may include deck and design doc — align with the official checklist when the backend is live.
+      </p>
+
+      <form id="form-upload" class="form">
+        <label class="field">
+          <span class="field-label">Entry type</span>
+          <select name="uploadTrack" id="upload-track">
+            <option value="team">Team project</option>
+            <option value="individual">Individual project</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field-label">Project</span>
+          <select name="uploadProject" id="upload-project"></select>
+        </label>
+
+        <label class="field">
+          <span class="field-label">Playable link</span>
+          <input type="url" name="playUrl" placeholder="https://…" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Build / archive (optional)</span>
+          <input type="file" name="build" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Presentation / supplemental files (optional)</span>
+          <input type="file" name="extras" multiple />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Notes for judges</span>
+          <textarea name="notes" rows="3" placeholder="Controls, known issues, how to run locally…"></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-primary">Submit upload (demo)</button>
+        <p class="form-status" id="upload-status" role="status"></p>
+      </form>
+    </section>
+
+    <!-- Tab 3: Projects & voting -->
+    <section id="panel-projects" class="panel" hidden aria-labelledby="projects-heading">
+      <h1 id="projects-heading" class="panel-title">Projects &amp; voting</h1>
+      <p class="panel-lead">
+        Browse entries, download materials, and score each project once on four criteria (demo uses browser storage).
+      </p>
+
+      <div class="subtab-bar" role="tablist" aria-label="Project type">
+        <button type="button" class="subtab subtab--active" data-subtab="individual" role="tab" aria-selected="true">Individual</button>
+        <button type="button" class="subtab" data-subtab="team" role="tab" aria-selected="false">Team</button>
+      </div>
+
+      <div id="subpanel-individual" class="subpanel subpanel--active">
+        <ul class="project-list" id="list-individual"></ul>
+      </div>
+      <div id="subpanel-team" class="subpanel" hidden>
+        <ul class="project-list" id="list-team"></ul>
+      </div>
+
+      <p class="demo-reset">
+        <button type="button" class="btn btn-ghost btn-small" id="btn-clear-votes">Reset demo votes (local storage)</button>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>AI Game Lab · Internal hackathon tooling — SSO &amp; API coming next.</p>
+  </footer>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
