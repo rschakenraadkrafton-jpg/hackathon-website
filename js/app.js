@@ -173,39 +173,101 @@
 
   /** ---------- Upload dropdown ---------- */
   function initUploadForm() {
-    const trackSel = document.getElementById("upload-track");
-    const projectSel = document.getElementById("upload-project");
-    const form = document.getElementById("form-upload");
-    const status = document.getElementById("upload-status");
+    const indProjectSel = document.getElementById("upload-ind-project");
+    const teamProjectSel = document.getElementById("upload-team-project");
+    const indForm = document.getElementById("form-upload-individual");
+    const teamForm = document.getElementById("form-upload-team");
+    const indStatus = document.getElementById("upload-ind-status");
+    const teamStatus = document.getElementById("upload-team-status");
 
-    function fillProjects() {
-      const list = trackSel.value === "team" ? MOCK_TEAM : MOCK_INDIVIDUAL;
-      projectSel.innerHTML = "";
-      list.forEach((p) => {
+    function fillIndividualProjects() {
+      indProjectSel.innerHTML = "";
+      MOCK_INDIVIDUAL.forEach((p) => {
         const opt = document.createElement("option");
         opt.value = p.id;
         opt.textContent = p.title;
-        projectSel.appendChild(opt);
+        indProjectSel.appendChild(opt);
       });
     }
 
-    trackSel.addEventListener("change", fillProjects);
-    fillProjects();
+    function fillTeamProjects() {
+      teamProjectSel.innerHTML = "";
+      MOCK_TEAM.forEach((p) => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.title;
+        teamProjectSel.appendChild(opt);
+      });
+    }
 
-    form.addEventListener("submit", (e) => {
+    function initUploadSubtabs() {
+      const tabs = document.querySelectorAll(".upload-subtab");
+      const panels = {
+        individual: document.getElementById("upload-subpanel-individual"),
+        team: document.getElementById("upload-subpanel-team"),
+      };
+      tabs.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-upload-subtab");
+          tabs.forEach((t) => {
+            t.classList.toggle("subtab--active", t === btn);
+            t.setAttribute("aria-selected", t === btn ? "true" : "false");
+          });
+          Object.entries(panels).forEach(([key, panel]) => {
+            const active = key === id;
+            panel.toggleAttribute("hidden", !active);
+            panel.classList.toggle("subpanel--active", active);
+          });
+        });
+      });
+    }
+
+    fillIndividualProjects();
+    fillTeamProjects();
+    initUploadSubtabs();
+
+    indForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const meta = {
-        track: trackSel.value,
-        projectId: projectSel.value,
-        playUrl: form.playUrl.value.trim(),
-        notes: form.notes.value.trim(),
+        type: "individual",
+        track: "individual",
+        projectId: indProjectSel.value,
+        playUrl: indForm.playUrl.value.trim(),
+        notes: indForm.notes.value.trim(),
         savedAt: new Date().toISOString(),
       };
       const prev = JSON.parse(sessionStorage.getItem(STORAGE_UPLOADS) || "[]");
       prev.push(meta);
       sessionStorage.setItem(STORAGE_UPLOADS, JSON.stringify(prev));
-      status.textContent = `Upload queued (demo): ${projectSel.options[projectSel.selectedIndex].text}.`;
-      status.classList.add("is-success");
+      indStatus.textContent = `Individual upload queued (demo): ${indProjectSel.options[indProjectSel.selectedIndex].text}.`;
+      indStatus.classList.add("is-success");
+    });
+
+    teamForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fileInput = teamForm.gddFile;
+      if (!fileInput.files || fileInput.files.length === 0) {
+        teamStatus.textContent = "Please attach a game design document file.";
+        teamStatus.classList.remove("is-success");
+        return;
+      }
+      const meta = {
+        type: "team",
+        track: "team",
+        projectId: teamProjectSel.value,
+        playUrl: teamForm.playUrl.value.trim(),
+        hasBuild: Boolean(teamForm.build.files && teamForm.build.files.length > 0),
+        extraFileCount: teamForm.extras.files ? teamForm.extras.files.length : 0,
+        fileName: fileInput.files[0].name,
+        notes: teamForm.notes.value.trim(),
+        savedAt: new Date().toISOString(),
+      };
+      const prev = JSON.parse(sessionStorage.getItem(STORAGE_UPLOADS) || "[]");
+      prev.push(meta);
+      sessionStorage.setItem(STORAGE_UPLOADS, JSON.stringify(prev));
+      teamStatus.textContent = `Team upload queued (demo): ${teamProjectSel.options[teamProjectSel.selectedIndex].text} · GDD ${meta.fileName}`;
+      teamStatus.classList.add("is-success");
+      teamForm.reset();
     });
   }
 

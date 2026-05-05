@@ -14,7 +14,11 @@
 
   <header class="site-header">
     <div class="header-inner">
-      <div class="brand">
+      <div class="header-top">
+        <div class="brand-text">
+          <span class="brand-kicker">West Publishing · AI Game Lab</span>
+          <span class="brand-title">AI Hackathon</span>
+        </div>
         <img
           class="brand-logo"
           src="assets/logo.png"
@@ -23,10 +27,6 @@
           height="auto"
           onerror="this.classList.add('brand-logo--missing')"
         />
-        <div class="brand-text brand-text--fallback">
-          <span class="brand-kicker">West Publishing · AI Game Lab</span>
-          <span class="brand-title">AI Hackathon</span>
-        </div>
       </div>
       <p class="tagline">
         Register, submit your build, and explore projects — July 2026
@@ -110,46 +110,81 @@
     <section id="panel-upload" class="panel" hidden aria-labelledby="upload-heading">
       <h1 id="upload-heading" class="panel-title">Upload results</h1>
       <p class="panel-lead">
-        Submit your playable link and files. Team track may include deck and design doc — align with the official checklist when the backend is live.
+        Submit your playable link and files. Team entries include build/archive, presentation/supplemental files, and game design doc.
       </p>
 
-      <form id="form-upload" class="form">
-        <label class="field">
-          <span class="field-label">Entry type</span>
-          <select name="uploadTrack" id="upload-track">
-            <option value="team">Team project</option>
-            <option value="individual">Individual project</option>
-          </select>
-        </label>
+      <div class="subtab-bar upload-subtab-bar" role="tablist" aria-label="Upload type">
+        <button type="button" class="subtab upload-subtab subtab--active" data-upload-subtab="individual" role="tab" aria-selected="true">
+          Individual upload
+        </button>
+        <button type="button" class="subtab upload-subtab" data-upload-subtab="team" role="tab" aria-selected="false">
+          Team upload
+        </button>
+      </div>
 
-        <label class="field">
-          <span class="field-label">Project</span>
-          <select name="uploadProject" id="upload-project"></select>
-        </label>
+      <div id="upload-subpanel-individual" class="subpanel subpanel--active">
+        <form id="form-upload-individual" class="form">
+          <label class="field">
+            <span class="field-label">Individual project</span>
+            <select name="individualProject" id="upload-ind-project"></select>
+          </label>
 
-        <label class="field">
-          <span class="field-label">Playable link</span>
-          <input type="url" name="playUrl" placeholder="https://…" />
-        </label>
+          <label class="field">
+            <span class="field-label">Playable link</span>
+            <input type="url" name="playUrl" placeholder="https://…" />
+          </label>
 
-        <label class="field">
-          <span class="field-label">Build / archive (optional)</span>
-          <input type="file" name="build" />
-        </label>
+          <label class="field">
+            <span class="field-label">Build / archive (optional)</span>
+            <input type="file" name="build" />
+          </label>
 
-        <label class="field">
-          <span class="field-label">Presentation / supplemental files (optional)</span>
-          <input type="file" name="extras" multiple />
-        </label>
+          <label class="field">
+            <span class="field-label">Notes for judges</span>
+            <textarea name="notes" rows="3" placeholder="Controls, known issues, how to run locally…"></textarea>
+          </label>
 
-        <label class="field">
-          <span class="field-label">Notes for judges</span>
-          <textarea name="notes" rows="3" placeholder="Controls, known issues, how to run locally…"></textarea>
-        </label>
+          <button type="submit" class="btn btn-primary">Submit individual upload (demo)</button>
+          <p class="form-status" id="upload-ind-status" role="status"></p>
+        </form>
+      </div>
 
-        <button type="submit" class="btn btn-primary">Submit upload (demo)</button>
-        <p class="form-status" id="upload-status" role="status"></p>
-      </form>
+      <div id="upload-subpanel-team" class="subpanel" hidden>
+        <form id="form-upload-team" class="form">
+          <label class="field">
+            <span class="field-label">Team project</span>
+            <select name="teamProject" id="upload-team-project"></select>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Playable link</span>
+            <input type="url" name="playUrl" placeholder="https://…" />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Build / archive</span>
+            <input type="file" name="build" required />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Presentation / supplemental files</span>
+            <input type="file" name="extras" multiple />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Game design document (required)</span>
+            <input type="file" name="gddFile" required />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Notes for judges</span>
+            <textarea name="notes" rows="3" placeholder="Version notes, controls, setup instructions, known issues…"></textarea>
+          </label>
+
+          <button type="submit" class="btn btn-primary">Submit team upload (demo)</button>
+          <p class="form-status" id="upload-team-status" role="status"></p>
+        </form>
+      </div>
     </section>
 
     <!-- Tab 3: Projects & voting -->

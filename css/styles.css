@@ -71,24 +71,21 @@ body {
   margin: 0 auto;
 }
 
-.brand {
+.header-top {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 1rem 1.5rem;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .brand-logo {
   max-height: 72px;
   width: auto;
   display: block;
+  flex-shrink: 0;
 }
 
 .brand-logo.brand-logo--missing {
-  display: none;
-}
-
-.brand-logo:not(.brand-logo--missing) + .brand-text {
   display: none;
 }
 
@@ -118,10 +115,17 @@ body {
 }
 
 .tagline {
-  margin: 1rem 0 0;
+  margin: 0.75rem 0 0;
   max-width: 42ch;
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+@media (max-width: 700px) {
+  .header-top {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
 }
 
 .tab-bar {
@@ -400,6 +404,10 @@ textarea:focus-visible {
 .subtab--active {
   background: rgba(107, 45, 138, 0.45);
   color: var(--text);
+}
+
+.upload-subtab-bar {
+  margin-top: 0.25rem;
 }
 
 .subpanel[hidden] {
