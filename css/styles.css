@@ -509,3 +509,9 @@ textarea:focus-visible {
 .site-footer p {
   margin: 0;
 }
+
+.build-stamp {
+  margin-top: 0.45rem !important;
+  font-size: 0.74rem;
+  opacity: 0.9;
+}
