@@ -18,3 +18,7 @@ npx serve -l 5173
 ## Logo (optional)
 
 Place your logo at `assets/logo.png` and commit it to show the header image.
+
+## Deployment notes
+
+Redeploy trigger updated on 2026-05-05.
